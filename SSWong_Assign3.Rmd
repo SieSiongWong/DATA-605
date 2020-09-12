@@ -1,0 +1,264 @@
+---
+title: 'Assignment #3'
+author: "Sie Siong Wong"
+date: "9/9/2020"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    toc_collapsed: true
+theme: lumen
+---
+
+# Problem Set 1
+
+## Question 1
+
+What is the rank of the matrix A? 
+
+$$A\quad =\quad \begin{bmatrix} 1 & 2 & 3 & 4 \\ -1 & 0 & 1 & 3 \\ 0 & 1 & -2 & 1 \\ 5 & 4 & -2 & -3 \end{bmatrix}$$
+
+**Answer**: To find the rank of a matrix, we can either find the maximum number of linearly independent column vectors in the matrix or the maximum number of linearly independent row vectors in the matrix. 
+
+The maximum number of linearly independent vectors in a matrix is equal to the number of non-zero rows in its row echelon matrix. Therefore, to find the rank of a matrix, we simply transform the matrix A to its row echelon form and count the number of non-zero rows.
+
+**The rank of the matrix A is 4**. This is found by the two ways demonstrated as below.
+
+**1.** Using a rank of matrix calculation package, "matrixcalc".
+
+```{r, eval=TRUE}
+
+library(matrixcalc)
+
+mtx_A <- matrix(c(1,2,3,4,-1,0,1,3,0,1,-2,1,5,4,-2,-3), byrow=T, nrow=4, ncol=4)
+matrix.rank(mtx_A)
+
+```
+
+**2.** Using the row echelon form to find the number of linearly independent row. We can see that the number of non-zero rows in the row echelon form below is **4**. 
+
+Row Operation 1: add 1 times the 1st row to the 2nd row
+
+$$\begin{bmatrix} 1 & 2 & 3 & 4 \\ -1 & 0 & 1 & 3 \\ 0 & 1 & -2 & 1 \\ 5 & 4 & -2 & -3 \end{bmatrix}\quad \longrightarrow \quad \begin{bmatrix} 1 & 2 & 3 & 4 \\ 0 & 2 & 4 & 7 \\ 0 & 1 & -2 & 1 \\ 5 & 4 & -2 & -3 \end{bmatrix}\quad$$
+
+Row Operation 2: add -5 times the 1st row to the 4th row
+
+$$\quad \begin{bmatrix} 1 & 2 & 3 & 4 \\ 0 & 2 & 4 & 7 \\ 0 & 1 & -2 & 1 \\ 5 & 4 & -2 & -3 \end{bmatrix}\quad \longrightarrow \quad \begin{bmatrix} 1 & 2 & 3 & 4 \\ 0 & 2 & 4 & 7 \\ 0 & 1 & -2 & 1 \\ 0 & -6 & -17 & -23 \end{bmatrix}\quad$$
+
+Row Operation 3: multiply the 2nd row by 1/2
+
+$$\quad \begin{bmatrix} 1 & 2 & 3 & 4 \\ 0 & 2 & 4 & 7 \\ 0 & 1 & -2 & 1 \\ 0 & -6 & -17 & -23 \end{bmatrix}\quad \longrightarrow \quad \begin{bmatrix} 1 & 2 & 3 & 4 \\ 0 & 1 & 2 & 7/2 \\ 0 & 1 & -2 & 1 \\ 0 & -6 & -17 & -23 \end{bmatrix}\quad$$
+
+Row Operation 4: add -1 times the 2nd row to the 3rd row
+
+$$\quad \begin{bmatrix} 1 & 2 & 3 & 4 \\ 0 & 1 & 2 & 7/2 \\ 0 & 1 & -2 & 1 \\ 0 & -6 & -17 & -23 \end{bmatrix}\quad \longrightarrow \quad \begin{bmatrix} 1 & 2 & 3 & 4 \\ 0 & 1 & 2 & 7/2 \\ 0 & 0 & -4 & -5/2 \\ 0 & -6 & -17 & -23 \end{bmatrix}\quad$$
+
+Row Operation 5: add 6 times the 2nd row to the 4th row
+
+$$\quad \begin{bmatrix} 1 & 2 & 3 & 4 \\ 0 & 1 & 2 & 7/2 \\ 0 & 0 & -4 & -5/2 \\ 0 & -6 & -17 & -23 \end{bmatrix}\quad \longrightarrow \quad \begin{bmatrix} 1 & 2 & 3 & 4 \\ 0 & 1 & 2 & 7/2 \\ 0 & 0 & -4 & -5/2 \\ 0 & 0 & -5 & -2 \end{bmatrix}\quad$$
+
+Row Operation 6: multiply the 3rd row by -1/4
+
+$$\quad \begin{bmatrix} 1 & 2 & 3 & 4 \\ 0 & 1 & 2 & 7/2 \\ 0 & 0 & -4 & -5/2 \\ 0 & 0 & -5 & -2 \end{bmatrix}\quad \longrightarrow \quad \begin{bmatrix} 1 & 2 & 3 & 4 \\ 0 & 1 & 2 & 7/2 \\ 0 & 0 & 1 & 5/8 \\ 0 & 0 & -5 & -2 \end{bmatrix}\quad$$
+
+Row Operation 7: add 5 times the 3rd row to the 4th row	
+
+$$\quad \begin{bmatrix} 1 & 2 & 3 & 4 \\ 0 & 1 & 2 & 7/2 \\ 0 & 0 & 1 & 5/8 \\ 0 & 0 & -5 & -2 \end{bmatrix}\quad \longrightarrow \quad \begin{bmatrix} 1 & 2 & 3 & 4 \\ 0 & 1 & 2 & 7/2 \\ 0 & 0 & 1 & 5/8 \\ 0 & 0 & 0 & 9/8 \end{bmatrix}\quad$$
+
+Row Operation 8: multiply the 4th row by 8/9	
+
+$$\quad \begin{bmatrix} 1 & 2 & 3 & 4 \\ 0 & 1 & 2 & 7/2 \\ 0 & 0 & 1 & 5/8 \\ 0 & 0 & 0 & 9/8 \end{bmatrix}\quad \longrightarrow \quad \begin{bmatrix} 1 & 2 & 3 & 4 \\ 0 & 1 & 2 & 7/2 \\ 0 & 0 & 1 & 5/8 \\ 0 & 0 & 0 & 1 \end{bmatrix}\quad$$
+
+## Question 2
+
+Given an mxn matrix where m > n, what can be the maximum rank? The minimum rank, assuming that the matrix is non-zero?
+
+**Answer**: 
+
+For m x n matrix, if m is greater than n, then the maximum rank of the matrix is n. For the case where m x n matrix, the maximum rank is always **_min(m x n)_**.
+
+The maximum number of linearly independent rows in a matrix is called the row rank, and the maximum number of linearly independent columns in a matrix is called the column rank. Because for any matrix, the row rank = the column rank; therefore, for the case of a square matrix, the maximum rank is less than or equal to the number of row or column of that matrix.
+
+Even there is only one element in a matrix, its minimum rank would be one. The rank of a matrix would be zero only if the matrix had no elements.
+
+## Question 3
+
+What is the rank of matrix B?
+
+$$B\quad =\quad \begin{bmatrix} 1 & 2 & 1 \\ 3 & 6 & 3 \\ 2 & 4 & 2 \end{bmatrix}$$
+
+**Answer**: To find the rank of a matrix, we can either find the maximum number of linearly independent column vectors in the matrix or the maximum number of linearly independent row vectors in the matrix. 
+
+The maximum number of linearly independent vectors in a matrix is equal to the number of non-zero rows in its row echelon matrix. Therefore, to find the rank of a matrix, we simply transform the matrix A to its row echelon form and count the number of non-zero rows.
+
+**The rank of the matrix A is 1**. This is found by the two ways demonstrated as below.
+
+**1.** Using a rank of matrix calculation package, "matrixcalc".
+
+```{r, eval=TRUE}
+
+library(matrixcalc)
+
+mtx_B <- matrix(c(1,2,1,3,6,3,2,4,2), byrow=T, nrow=3, ncol=3)
+matrix.rank(mtx_B)
+
+```
+
+**2.** Using the row echelon form to find the number of linearly independent row. We can see that the number of non-zero rows in the row echelon form below is **1**. 
+
+Row Operation 1: add -3 times the 1st row to the 2nd row
+
+$$\begin{bmatrix} 1 & 2 & 1 \\ 3 & 6 & 3 \\ 2 & 4 & 2 \end{bmatrix}\quad \longrightarrow \quad \begin{bmatrix} 1 & 2 & 1 \\ 0 & 0 & 0 \\ 2 & 4 & 2 \end{bmatrix}\quad$$
+
+Row Operation 2: add -2 times the 1st row to the 3rd row
+
+$$\begin{bmatrix} 1 & 2 & 1 \\ 0 & 0 & 0 \\ 2 & 4 & 2 \end{bmatrix}\quad \longrightarrow \quad \begin{bmatrix} 1 & 2 & 1 \\ 0 & 0 & 0 \\ 0 & 0 & 0 \end{bmatrix}\quad$$
+
+
+# Problem Set 2
+
+Compute the eigenvalues and eigenvectors of the matrix A. You'll need to show your work. You'll need to write out the characteristic polynomial and show your solution.
+
+$$A\quad =\quad \begin{bmatrix} 1 & 2 & 3 \\ 0 & 4 & 5 \\ 0 & 0 & 6 \end{bmatrix}$$
+
+**Answer**:
+
+Let lambda, $\lambda$ is an eigenvalue of A if and only if $A\vec { \nu  } =\quad \lambda \vec { \nu  }$ for some non-zero  
+
+$A\vec { \nu  } = \lambda \vec { \nu  }$ is true if and only if $0 = \lambda \vec { \nu  } -  A\vec { \nu  } = (\lambda { I }_{ n } - A)\vec { \nu  }$ . $(\lambda { I }_{ n } - A)\vec { \nu  } = 0$ is true if and only of $det(\lambda { I }_{ n } - A) = 0$ for some non-zero $\vec { \nu  }$.
+
+Applying the $det(\lambda { I }_{ n } - A) = 0$ to find the eigenvalue of matrix A.
+
+$$\lambda { I }_{ 3 }=\begin{bmatrix} \lambda  & 0 & 0 \\ 0 & \lambda  & 0 \\ 0 & 0 & \lambda  \end{bmatrix}\quad \longrightarrow \quad \lambda { I }_{ 3 }-A=\begin{bmatrix} \lambda -1 & -2 & -3 \\ 0 & \lambda -4 & -5 \\ 0 & 0 & \lambda -6 \end{bmatrix}$$
+
+Using the Sarrus’ rule to find the $det(\lambda { I }_{ 3 } - A)$.
+
+```{r, echo=FALSE}
+url <- "https://dcvp84mxptlac.cloudfront.net/diagrams2/equation-5-shortcut-method-to-obtain-the-determinant-of-a-3x3-matrix.png"
+```
+<center><img src="`r url`"></center>
+
+
+$$\begin{bmatrix} \lambda -1 & -2 & -3 \\ 0 & \lambda -4 & -5 \\ 0 & 0 & \lambda -6 \end{bmatrix}\begin{matrix} \lambda -1 & -2 \\ 0 & \lambda -4 \\ 0 & 0 \end{matrix}$$
+
+$det(\lambda { I }_{ 3 } - A) = (\lambda-1)(\lambda-4)(\lambda-6) + (-2)(-5)(0) + (-3)(0)(0) - (0)(\lambda-4)(-3) - (0)(-5)(\lambda-1) - (\lambda-6)(0)(-2)$
+
+= $(\lambda-1)(\lambda-4)(\lambda-6)$
+
+So, the characteristic of polynomial for the matrix A is 
+
+$$pA(\lambda)=(\lambda-1)(\lambda-4)(\lambda-6)$$
+
+The determinant of this matrix for any lambda has to be equal to zero if any only if lambda is truly an eigenvalue. So, let set $(\lambda-1)(\lambda-4)(\lambda-6)=0$. Therefore, the possible eigenvalues of matrix A are: 
+
+\[
+  {\displaystyle
+    \begin{aligned}  
+                    \lambda=1,\quad \lambda=4,\quad \lambda=6
+    \end{aligned}
+  }
+\]
+
+
+Now, let find the corresponding eigenvectors of A using the equation $(\lambda { I }_{ n } - A)\vec { \nu  }=0$
+
+$~$
+
+**1.** Let take the case of $\lambda=1$,
+
+$$\begin{bmatrix} \lambda -1 & -2 & -3 \\ 0 & \lambda -4 & -5 \\ 0 & 0 & \lambda -6 \end{bmatrix}\quad \longrightarrow \quad \begin{bmatrix} 1-1 & -2 & -3 \\ 0 & 1-4 & -5 \\ 0 & 0 & 1-6 \end{bmatrix}\vec { \nu  } =0\quad \longrightarrow \quad \begin{bmatrix} 0 & -2 & -3 \\ 0 & -3 & -5 \\ 0 & 0 & -5 \end{bmatrix}\vec { \nu  } =0$$
+
+The null space of this matrix $\begin{bmatrix} 0 & -2 & -3 \\ 0 & -3 & -5 \\ 0 & 0 & -5 \end{bmatrix}$ is the eigenspace. To solve for eigenvectors, we can do the reduced row echelon form for this matrix.
+
+$~$
+
+Row Operation 1: multiply the 1st row by -1/2
+
+$$\begin{bmatrix} 0 & -2 & -3 \\ 0 & -3 & -5 \\ 0 & 0 & -5 \end{bmatrix}\quad \longrightarrow \quad \begin{bmatrix} 0 & 1 & 3/2 \\ 0 & -3 & -5 \\ 0 & 0 & -5 \end{bmatrix}$$
+
+Row Operation 2: add 3 times the 1st row to the 2nd row
+
+$$\begin{bmatrix} 0 & 1 & 3/2 \\ 0 & -3 & -5 \\ 0 & 0 & -5 \end{bmatrix}\quad \longrightarrow \quad \begin{bmatrix} 0 & 1 & 3/2 \\ 0 & 0 & -1/2 \\ 0 & 0 & -5 \end{bmatrix}$$
+
+Row Operation 3: multiply the 2nd row by -2
+
+$$\begin{bmatrix} 0 & 1 & 3/2 \\ 0 & 0 & -1/2 \\ 0 & 0 & -5 \end{bmatrix}\quad \longrightarrow \quad \begin{bmatrix} 0 & 1 & 3/2 \\ 0 & 0 & 1 \\ 0 & 0 & -5 \end{bmatrix}$$
+
+Row Operation 4: add 5 times the 2nd row to the 3rd row
+
+$$\begin{bmatrix} 0 & 1 & 3/2 \\ 0 & 0 & 1 \\ 0 & 0 & -5 \end{bmatrix}\quad \longrightarrow \quad \begin{bmatrix} 0 & 1 & 3/2 \\ 0 & 0 & 1 \\ 0 & 0 & 0 \end{bmatrix}$$
+
+Row Operation 5: add -3/2 times the 2nd row to the 1st row
+
+$$\begin{bmatrix} 0 & 1 & 3/2 \\ 0 & 0 & 1 \\ 0 & 0 & 0 \end{bmatrix}\quad \longrightarrow \quad \begin{bmatrix} 0 & 1 & 0 \\ 0 & 0 & 1 \\ 0 & 0 & 0 \end{bmatrix}$$
+
+$~$
+
+$$\begin{bmatrix} 0 & 1 & 0 \\ 0 & 0 & 1 \\ 0 & 0 & 0 \end{bmatrix}\begin{bmatrix} { v }_{ 1 } \\ { v }_{ 2 } \\ { v }_{ 3 } \end{bmatrix}\quad =\quad \begin{bmatrix} 0 \\ 0 \\ 0 \end{bmatrix}\quad \longrightarrow \quad { v }_{ 2 }=0,\quad { v }_{ 3 }=0,\quad { v }_{ 1 }={ v }_{ 1 }$$
+
+So, the eigenvector of matrix A associated with the eigenvalue $\lambda=1$ is:
+
+$$V=\begin{pmatrix} { v }_{ 1 } \\ 0 \\ 0 \end{pmatrix}={ v }_{ 1 }\begin{pmatrix} 1 \\ 0 \\ 0 \end{pmatrix},\quad for\quad any\quad real\quad number\quad { v }_{ 1 }\neq 0.$$
+$~$
+
+**2.** Let take the case of $\lambda=4$,
+
+$$\begin{bmatrix} \lambda -1 & -2 & -3 \\ 0 & \lambda -4 & -5 \\ 0 & 0 & \lambda -6 \end{bmatrix}\quad \longrightarrow \quad \begin{bmatrix} 4-1 & -2 & -3 \\ 0 & 4-4 & -5 \\ 0 & 0 & 4-6 \end{bmatrix}\vec { \nu  } =0\quad \longrightarrow \quad \begin{bmatrix} 3 & -2 & -3 \\ 0 & 0 & -5 \\ 0 & 0 & -2 \end{bmatrix}\vec { \nu  } =0$$
+
+The null space of this matrix $\begin{bmatrix} 3 & -2 & -3 \\ 0 & 0 & -5 \\ 0 & 0 & -2 \end{bmatrix}$ is the eigenspace. To solve for eigenvectors, we can do the reduced row echelon form for this matrix.
+
+$~$
+
+Row Operation 1: multiply the 1st row by 1/3
+
+$$\begin{bmatrix} 3 & -2 & -3 \\ 0 & 0 & -5 \\ 0 & 0 & -2 \end{bmatrix}\quad \longrightarrow \quad \begin{bmatrix} 1 & -2/3 & -1 \\ 0 & 0 & -5 \\ 0 & 0 & -2 \end{bmatrix}$$
+
+Row Operation 2: multiply the 2nd row by -1/5
+
+$$\begin{bmatrix} 1 & -2/3 & -1 \\ 0 & 0 & -5 \\ 0 & 0 & -2 \end{bmatrix}\quad \longrightarrow \quad \begin{bmatrix} 1 & -2/3 & -1 \\ 0 & 0 & 1 \\ 0 & 0 & -2 \end{bmatrix}$$
+
+Row Operation 3: add 2 times the 2nd row to the 3rd row	
+
+$$\begin{bmatrix} 1 & -2/3 & -1 \\ 0 & 0 & 1 \\ 0 & 0 & -2 \end{bmatrix}\quad \longrightarrow \quad \begin{bmatrix} 1 & -2/3 & -1 \\ 0 & 0 & 1 \\ 0 & 0 & 0 \end{bmatrix}$$
+
+Row Operation 4: add 1 times the 2nd row to the 1st row
+
+$$\begin{bmatrix} 1 & -2/3 & -1 \\ 0 & 0 & 1 \\ 0 & 0 & 0 \end{bmatrix}\quad \longrightarrow \quad \begin{bmatrix} 1 & -2/3 & 0 \\ 0 & 0 & 1 \\ 0 & 0 & 0 \end{bmatrix}$$
+
+$~$
+
+$$\begin{bmatrix} 1 & -2/3 & 0 \\ 0 & 0 & 1 \\ 0 & 0 & 0 \end{bmatrix}\begin{bmatrix} { v }_{ 1 } \\ { v }_{ 2 } \\ { v }_{ 3 } \end{bmatrix}\quad =\quad \begin{bmatrix} 0 \\ 0 \\ 0 \end{bmatrix}\quad \longrightarrow \quad { v }_{ 1 }=2/3{ v }_{ 2 },\quad { v }_{ 3 }=0,\quad { v }_{ 2 }={ v }_{ 2 }$$
+
+So, the eigenvector of matrix A associated with the eigenvalue $\lambda=4$ is:
+
+$$V=\begin{pmatrix} \frac { 2 }{ 3 } { v }_{ 2 } \\ { v }_{ 2 } \\ 0 \end{pmatrix}={ v }_{ 2 }\begin{pmatrix} \frac { 2 }{ 3 }  \\ 0 \\ 0 \end{pmatrix},\quad for\quad any\quad real\quad number\quad { v }_{ 2 }\neq 0.$$
+$~$
+
+**3.** Let take the case of $\lambda=6$,
+
+$$\begin{bmatrix} \lambda -1 & -2 & -3 \\ 0 & \lambda -4 & -5 \\ 0 & 0 & \lambda -6 \end{bmatrix}\quad \longrightarrow \quad \begin{bmatrix} 6-1 & -2 & -3 \\ 0 & 6-4 & -5 \\ 0 & 0 & 6-6 \end{bmatrix}\vec { \nu  } =0\quad \longrightarrow \quad \begin{bmatrix} 5 & -2 & -3 \\ 0 & 2 & -5 \\ 0 & 0 & 0 \end{bmatrix}\vec { \nu  } =0$$
+
+The null space of this matrix $\begin{bmatrix}  5 & -2 & -3 \\ 0 & 2 & -5 \\ 0 & 0 & 0 \end{bmatrix}$ is the eigenspace. To solve for eigenvectors, we can do the reduced row echelon form for this matrix.
+
+$~$
+
+Row Operation 1: multiply the 1st row by 1/5
+
+$$\begin{bmatrix} 5 & -2 & -3 \\ 0 & 2 & -5 \\ 0 & 0 & 0 \end{bmatrix}\quad \longrightarrow \quad \begin{bmatrix} 5 & -2/5 & -3/5 \\ 0 & 2 & -5 \\ 0 & 0 & 0 \end{bmatrix}$$
+
+Row Operation 2: multiply the 2nd row by 1/2
+
+$$\begin{bmatrix} 5 & -2/5 & -3/5 \\ 0 & 2 & -5 \\ 0 & 0 & 0 \end{bmatrix}\quad \longrightarrow \quad \begin{bmatrix} 5 & -2/5 & -3/5 \\ 0 & 1 & -5/2 \\ 0 & 0 & 0 \end{bmatrix}$$
+
+Row Operation 3: add 2/5 times the 2nd row to the 1st row
+
+$$\begin{bmatrix} 5 & -2/5 & -3/5 \\ 0 & 1 & -5/2 \\ 0 & 0 & 0 \end{bmatrix}\quad \longrightarrow \quad \begin{bmatrix} 1 & 0 & -8/5 \\ 0 & 1 & -5/2 \\ 0 & 0 & 0 \end{bmatrix}$$
+
+$~$
+
+$$\begin{bmatrix} 1 & 0 & -8/5 \\ 0 & 1 & -5/2 \\ 0 & 0 & 0 \end{bmatrix}\begin{bmatrix} { v }_{ 1 } \\ { v }_{ 2 } \\ { v }_{ 3 } \end{bmatrix}\quad =\quad \begin{bmatrix} 0 \\ 0 \\ 0 \end{bmatrix}\quad \longrightarrow \quad { v }_{ 1 }=8/5{ v }_{ 3 },\quad { v }_{ 2 }=5/2{ v }_{ 3 },\quad { v }_{ 3 }={ v }_{ 3 }$$
+
+So, the eigenvector of matrix A associated with the eigenvalue $\lambda=6$ is:
+
+$$V=\begin{pmatrix} \frac { 8 }{ 5 } { v }_{ 3 } \\ \frac { 5 }{ 2 } { v }_{ 3 } \\ 0 \end{pmatrix}={ v }_{ 3 }\begin{pmatrix} \frac { 8 }{ 5 }  \\ \frac { 5 }{ 2 }  \\ 0 \end{pmatrix},\quad for\quad any\quad real\quad number\quad { v }_{ 3 }\neq 0.$$
+
